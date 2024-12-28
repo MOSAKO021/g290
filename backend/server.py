@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app, origins=["http://localhost:5173"])
 
 # Your ImgBB API key (replace with your actual key)
-api_key = '533876acdd70b4de97aa581b77d84684'
+api_key = ''
 
 # Function to stitch two images horizontally with 1:1 height ratio
 def stitch_images(img1, img2):
