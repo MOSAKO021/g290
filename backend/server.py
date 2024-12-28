@@ -22,6 +22,8 @@ def stitch_images(img1, img2):
 
     return new_image
 
+# comment
+
 @app.route('/stitch', methods=['POST'])
 def handle_stitch():
     if 'image1' not in request.files or 'image2' not in request.files:
