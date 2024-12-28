@@ -59,6 +59,12 @@ def upload_to_imgbb(image_path):
             return response_data['data']['url']
         else:
             return None
+        
+
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({"message": "server working"}), 200
+
 
 @app.route('/stitch', methods=['POST', 'OPTIONS'])
 def handle_stitch():
