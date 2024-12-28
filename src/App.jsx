@@ -16,36 +16,31 @@ function App() {
     const formData = new FormData();
     formData.append('image1', image1);
     formData.append('image2', image2);
-
+  
     try {
       const response = await axios.post('http://127.0.0.1:5000/stitch', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        responseType: 'blob', // Important: Get binary data
       });
-      console.log(response.data);
-
-      // Store the stitched image URL from the response
-      setStitchedImage(response.data.image_url);
+      setStitchedImage(URL.createObjectURL(response.data)); // Create a URL for the blob
     } catch (error) {
       console.error('Error stitching images:', error);
     }
   };
 
   const handlePredict = async () => {
-    try {
-      // Send the stitched image URL to the predict route
-      const predictionResponse = await axios.post('http://127.0.0.1:5000/predict', {
-        url: stitchedImage,
-      });
+    const formData = new FormData();
+    const response = await fetch(stitchedImage);
+    const blob = await response.blob();
+    formData.append('stitched_image', blob);
 
-      // Set the prediction state
+    try {
+      const predictionResponse = await axios.post('http://127.0.0.1:5000/predict', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       setPrediction(predictionResponse.data);
     } catch (error) {
       console.error('Error predicting count:', error);
     }
-  };
-
-  const handleClear = () => {
-    window.location.reload();
   };
 
   return (
@@ -82,22 +77,12 @@ function App() {
         </button>
       </div>
 
-      <div className="bg-white shadow rounded p-4 mb-8">
-        {stitchedImage && (
-          <>
-            <h2 className="text-xl font-bold mb-4">Stitched Image</h2>
-            <img src={stitchedImage} alt="Stitched" className="mx-auto" />
-            <div className="mt-4 text-center">
-              <button
-                onClick={handleClear}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
-              >
-                Clear
-              </button>
-            </div>
-          </>
-        )}
-      </div>
+      {stitchedImage && (
+        <div className="bg-white shadow rounded p-4 mb-8 text-center">
+          <h2 className="text-xl font-bold mb-4">Stitched Image</h2>
+          <img src={stitchedImage} alt="Stitched" className="mx-auto max-w-full" />
+        </div>
+      )}
 
       <div className="text-center space-x-4 mt-10">
         <button
