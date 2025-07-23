@@ -1,0 +1,39 @@
+.eye-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.eye {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 5px solid #000;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transform-origin: center;
+  transition: transform 1s ease-in-out;
+}
+
+.eye.watching {
+  transform: rotate(15deg); /* Rotating to simulate watching */
+}
+
+.pupil {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+  background-color: #000;
+  border-radius: 50%;
+  transition: transform 1s ease-in-out;
+}
+
+.eye.watching .pupil {
+  transform: translate(10px, -10px); /* Moving pupil when the eye rotates */
+}
